@@ -462,5 +462,8 @@ spark_home <- system("databricks-connect get-spark-home")
 sc <- spark_connect(method = "databricks",
                     spark_home = spark_home)
 copy_to(sc, iris, overwrite = TRUE)
+    
+   ![image](https://user-images.githubusercontent.com/26252963/147908357-5695a8c9-b337-4dc2-a744-77c2c5779244.png)
+ 
 
 spark_disconnect(sc)
