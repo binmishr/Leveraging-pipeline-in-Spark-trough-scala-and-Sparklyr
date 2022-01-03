@@ -6,7 +6,7 @@ You need to view the file in "Read Mode" to see the contents properly after down
 A Brief Introduction about Sparklyr
 ======================================
 
-sparklyr: R interface for Apache Spark
+sparklyr: R interface for Apache Spark, General Guidance about Sparklyr: https://github.com/sparklyr/sparklyr
 
 Github workflow status AppVeyor build status CRAN_Status_Badge codecov 
 
