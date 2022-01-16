@@ -6,7 +6,7 @@ You need to view the file in "Read Mode" to see the contents properly after down
 A Brief Introduction about Sparklyr
 ======================================
 
-sparklyr: R interface for Apache Spark, General Guidance about Sparklyr: https://github.com/sparklyr/sparklyr
+sparklyr: R interface for Apache Spark,
 
 Github workflow status AppVeyor build status CRAN_Status_Badge codecov 
 
@@ -21,12 +21,12 @@ Installation
 
 You can install the sparklyr package from CRAN as follows:
 
-install.packages("sparklyr")
+        install.packages("sparklyr")
 
 You should also install a local version of Spark for development purposes:
 
-library(sparklyr)
-spark_install()
+        library(sparklyr)
+        spark_install()
 
 To upgrade to the latest version of sparklyr, run the following command and restart your r session:
 
@@ -35,32 +35,32 @@ Connecting to Spark
 
 You can connect to both local instances of Spark as well as remote Spark clusters. Here we’ll connect to a local instance of Spark via the spark_connect function:
 
-library(sparklyr)
-sc <- spark_connect(master = "local")
+        library(sparklyr)
+        sc <- spark_connect(master = "local")
 
 The returned Spark connection (sc) provides a remote dplyr data source to the Spark cluster.
 
 For more information on connecting to remote Spark clusters see the Deployment section of the sparklyr website.
 Using dplyr
-
+============
 We can now use all of the available dplyr verbs against the tables within the cluster.
 
 We’ll start by copying some datasets from R into the Spark cluster (note that you may need to install the nycflights13 and Lahman packages in order to execute this code):
 
-install.packages(c("nycflights13", "Lahman"))
+        install.packages(c("nycflights13", "Lahman"))
 
-        library(dplyr)
-        iris_tbl <- copy_to(sc, iris, overwrite = TRUE)
-        flights_tbl <- copy_to(sc, nycflights13::flights, "flights", overwrite = TRUE)
-        batting_tbl <- copy_to(sc, Lahman::Batting, "batting", overwrite = TRUE)
-        src_tbls(sc)
+                library(dplyr)
+                iris_tbl <- copy_to(sc, iris, overwrite = TRUE)
+                flights_tbl <- copy_to(sc, nycflights13::flights, "flights", overwrite = TRUE)
+                batting_tbl <- copy_to(sc, Lahman::Batting, "batting", overwrite = TRUE)
+                src_tbls(sc)
 
-## [1] "batting" "flights" "iris"
+        ## [1] "batting" "flights" "iris"
 
 To start with here’s a simple filtering example:
 
 # filter by departure delay and print the first few records
-flights_tbl %>% filter(dep_delay == 2)
+        flights_tbl %>% filter(dep_delay == 2)
 
         ## # Source: spark<?> [?? x 19]
         ##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
@@ -150,7 +150,7 @@ Machine Learning
                 
 
 # copy mtcars into spark
-mtcars_tbl <- copy_to(sc, mtcars, overwrite = TRUE)
+        mtcars_tbl <- copy_to(sc, mtcars, overwrite = TRUE)
 
 # transform our data set, and then partition into 'training', 'test'
         partitions <- mtcars_tbl %>%
@@ -269,30 +269,30 @@ Here’s a simple example that wraps a Spark text file line counting function wi
         }
 
 # call spark to count the lines of the CSV
-count_lines(sc, tempfile)
+        count_lines(sc, tempfile)
 
-## [1] 336777
+        ## [1] 336777
 
 To learn more about creating extensions see the Extensions section of the sparklyr website.
 Table Utilities
-
+==================
 You can cache a table into memory with:
 
-tbl_cache(sc, "batting")
+        tbl_cache(sc, "batting")
 
 and unload from memory using:
 
-tbl_uncache(sc, "batting")
+        tbl_uncache(sc, "batting")
 
 Connection Utilities
 ========================
 You can view the Spark web console using the spark_web function:
 
-spark_web(sc)
+        spark_web(sc)
 
 You can show the log using the spark_log function:
 
-spark_log(sc, n = 10)
+        spark_log(sc, n = 10)
 
         ## 20/04/15 11:49:57 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 70 (/tmp/Rtmp3NF2Jb/filece955cc88fe.csv MapPartitionsRDD[336] at textFile at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
         ## 20/04/15 11:49:57 INFO TaskSchedulerImpl: Adding task set 70.0 with 1 tasks
@@ -307,16 +307,16 @@ spark_log(sc, n = 10)
 
 Finally, we disconnect from Spark:
 
-  spark_disconnect(sc)
+          spark_disconnect(sc)
 
 RStudio IDE
 =============
   
 The latest RStudio Preview Release of the RStudio IDE includes integrated support for Spark and the sparklyr package, including tools for:
 
-    Creating and managing Spark connections
-    Browsing the tables and columns of Spark DataFrames
-    Previewing the first 1,000 rows of Spark DataFrames
+            Creating and managing Spark connections
+            Browsing the tables and columns of Spark DataFrames
+            Previewing the first 1,000 rows of Spark DataFrames
 
 Once you’ve installed the sparklyr package, you should find a new Spark pane within the IDE. This pane includes a New Connection dialog which can be used to make connections to local or remote Spark instances:
 
@@ -382,7 +382,7 @@ rsparkling is a CRAN package from H2O that extends sparklyr to provide an interf
         ## Residual D.o.F. :29
         ## AIC :156.2425
 
-spark_disconnect(sc)
+        spark_disconnect(sc)
 
 Connecting through Livy
 ============================
@@ -391,9 +391,9 @@ Livy enables remote connections to Apache Spark clusters. However, please notice
 
 Before connecting to Livy, you will need the connection information to an existing service running Livy. Otherwise, to test livy in your local environment, you can install it and run it locally as follows:
 
-livy_install()
+        livy_install()
 
-livy_service_start()
+        livy_service_start()
 
 To connect, use the Livy service address as master and method = "livy" in spark_connect. Once connection completes, use sparklyr as usual, for instance:
 
@@ -415,11 +415,11 @@ To connect, use the Livy service address as master and method = "livy" in spark_
         ## 10          4.9         3.1          1.5         0.1 setosa
         ## # … with more rows
 
-spark_disconnect(sc)
+        spark_disconnect(sc)
 
 Once you are done using livy locally, you should stop this service with:
 
-livy_service_stop()
+        livy_service_stop()
 
 To connect to remote livy clusters that support basic authentication connect as:
 
@@ -464,4 +464,4 @@ copy_to(sc, iris, overwrite = TRUE)
    ![image](https://user-images.githubusercontent.com/26252963/147908357-5695a8c9-b337-4dc2-a744-77c2c5779244.png)
  
 
-spark_disconnect(sc)
+        spark_disconnect(sc)
